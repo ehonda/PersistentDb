@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PersistentDb.TestUtilities\PersistentDb.TestUtilities.csproj" />
+  </ItemGroup>
+
 </Project>
