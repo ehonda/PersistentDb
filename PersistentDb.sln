@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentDb.Tests", "Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentDb.TestUtilities", "PersistentDb.TestUtilities\PersistentDb.TestUtilities.csproj", "{2F6A70E9-D6A6-442D-87D4-A8857209AAAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentDb.Benchmarks", "PersistentDb.Benchmarks\PersistentDb.Benchmarks.csproj", "{8FF047A0-419A-4514-853B-F40B92C69C81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{2F6A70E9-D6A6-442D-87D4-A8857209AAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F6A70E9-D6A6-442D-87D4-A8857209AAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F6A70E9-D6A6-442D-87D4-A8857209AAAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF047A0-419A-4514-853B-F40B92C69C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF047A0-419A-4514-853B-F40B92C69C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF047A0-419A-4514-853B-F40B92C69C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF047A0-419A-4514-853B-F40B92C69C81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

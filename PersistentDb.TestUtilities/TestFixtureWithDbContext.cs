@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -10,6 +11,35 @@ public class TestFixtureWithDbContext<TDerivedContext> where TDerivedContext : D
     protected readonly Func<TDerivedContext> CreateContext;
 
     protected TDerivedContext Context = null!;
+
+    public TestFixtureWithDbContext()
+    {
+        if (DerivedContextConstructor is null)
+            throw new InvalidOperationException(
+                $"Could not find a suitable constructor for {DerivedContextType}. Please provide a public " +
+                $"constructor taking a single parameter of type {DbContextOptionsType}");
+
+        CreateContext = () => (TDerivedContext) DerivedContextConstructor
+            .Invoke(new object?[] { CreateDbContextOptions() });
+    }
+
+    public TestFixtureWithDbContext(Func<DbContextOptions<TDerivedContext>, TDerivedContext> derivedContextConstructor)
+    {
+        CreateContext = () => derivedContextConstructor(CreateDbContextOptions());
+    }
+
+    private static Type DerivedContextType => typeof(TDerivedContext);
+
+    private static Type DbContextOptionsType => typeof(DbContextOptions<TDerivedContext>);
+
+    // ReSharper disable once StaticMemberInGenericType
+    private static ConstructorInfo? DerivedContextConstructor { get; }
+        = DerivedContextType.GetConstructor(new[] { DbContextOptionsType });
+
+    private static DbContextOptions<TDerivedContext> CreateDbContextOptions() =>
+        new DbContextOptionsBuilder<TDerivedContext>()
+            .UseSqlite("DataSource=test.db")
+            .Options;
 
     [SetUp]
     public void SetUpContext()
@@ -24,28 +54,5 @@ public class TestFixtureWithDbContext<TDerivedContext> where TDerivedContext : D
     {
         Context.Database.EnsureDeleted();
         Context.Dispose();
-    }
-
-    public TestFixtureWithDbContext()
-    {
-        var derivedContextType = typeof(TDerivedContext);
-        var dbContextOptionsType = typeof(DbContextOptions<TDerivedContext>);
-        
-        var constructor = derivedContextType
-            .GetConstructor(new[] { dbContextOptionsType });
-
-        if (constructor is null)
-            throw new InvalidOperationException(
-                $"Could not find a suitable constructor for {derivedContextType}. Please provide a public " +
-                $"constructor taking a single parameter of type {dbContextOptionsType}");
-
-        CreateContext = () =>
-        {
-            var options = new DbContextOptionsBuilder<TDerivedContext>()
-                .UseSqlite("DataSource=test.db")
-                .Options;
-
-            return (constructor.Invoke(new object?[] { options }) as TDerivedContext)!;
-        };
     }
 }
