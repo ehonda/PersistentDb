@@ -20,12 +20,12 @@ public class TestFixtureWithDbContext<TDerivedContext> where TDerivedContext : D
                 $"constructor taking a single parameter of type {DbContextOptionsType}");
 
         CreateContext = () => (TDerivedContext) DerivedContextConstructor
-            .Invoke(new object?[] { CreateDbContextOptions() });
+            .Invoke(new object?[] { DbContextOptions });
     }
 
     public TestFixtureWithDbContext(Func<DbContextOptions<TDerivedContext>, TDerivedContext> derivedContextConstructor)
     {
-        CreateContext = () => derivedContextConstructor(CreateDbContextOptions());
+        CreateContext = () => derivedContextConstructor(DbContextOptions);
     }
 
     private static Type DerivedContextType => typeof(TDerivedContext);
@@ -36,7 +36,7 @@ public class TestFixtureWithDbContext<TDerivedContext> where TDerivedContext : D
     private static ConstructorInfo? DerivedContextConstructor { get; }
         = DerivedContextType.GetConstructor(new[] { DbContextOptionsType });
 
-    private static DbContextOptions<TDerivedContext> CreateDbContextOptions() =>
+    private static DbContextOptions<TDerivedContext> DbContextOptions =>
         new DbContextOptionsBuilder<TDerivedContext>()
             .UseSqlite("DataSource=test.db")
             .Options;
