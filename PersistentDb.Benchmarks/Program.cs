@@ -1,4 +1,3 @@
 ﻿using BenchmarkDotNet.Running;
-using PersistentDb.Benchmarks;
 
-BenchmarkRunner.Run<BenchmarksRaw>();
+BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
