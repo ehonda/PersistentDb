@@ -1,5 +1,15 @@
 # PersistentDb
 
+## Overview
+
+A POC for a test fixture base class, and some associated benchmarks
+
+## Sample benchmark results
+
+Here are some sample benchmark results from my machine
+
+### Configuration
+
 ``` ini
 BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1645 (21H1/May2021Update)
 Intel Core i5-7200U CPU 2.50GHz (Kaby Lake), 1 CPU, 4 logical and 2 physical cores
@@ -7,6 +17,24 @@ Intel Core i5-7200U CPU 2.50GHz (Kaby Lake), 1 CPU, 4 logical and 2 physical cor
   [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
   DefaultJob : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
 ```
+
+### `NoDatabaseAccess`
+
+|                     Method |     Mean |   Error |  StdDev | Ratio |
+|--------------------------- |---------:|--------:|--------:|------:|
+|         DirectConstruction | 408.9 ns | 1.76 ns | 1.65 ns |  1.00 |
+| InvokeReflectedConstructor | 602.3 ns | 2.04 ns | 1.90 ns |  1.47 |
+|             FullReflection | 782.4 ns | 2.66 ns | 2.36 ns |  1.91 |
+
+### `FileBasedDatabase`
+
+|                     Method |     Mean |   Error |  StdDev | Ratio |
+|--------------------------- |---------:|--------:|--------:|------:|
+|         DirectConstruction | 144.8 μs | 0.95 μs | 0.84 μs |  1.00 |
+| InvokeReflectedConstructor | 144.7 μs | 1.48 μs | 1.39 μs |  1.00 |
+|             FullReflection | 144.9 μs | 0.59 μs | 0.46 μs |  1.00 |
+
+### `All`
 
 |              Type |                     Method |           Mean |         Error |        StdDev |         Median |            P95 |  Ratio | RatioSD |
 |------------------ |--------------------------- |---------------:|--------------:|--------------:|---------------:|---------------:|-------:|--------:|
