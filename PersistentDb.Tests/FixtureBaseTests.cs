@@ -24,6 +24,23 @@ public class FixtureBaseTests
         fixture.TearDownContext();
         File.Exists("test.db").Should().BeFalse();
     }
+    
+    [Test]
+    public void SetUp_creates_file_ReflectedConstructor()
+    {
+        var fixture = new TestFixtureWithDbContext_ReflectedConstructor<MovieDbContext>();
+        fixture.SetUpContext();
+        File.Exists("test.db").Should().BeTrue();
+    }
+    
+    [Test]
+    public void TearDown_deletes_file_ReflectedConstructor()
+    {
+        var fixture = new TestFixtureWithDbContext_ReflectedConstructor<MovieDbContext>();
+        fixture.SetUpContext();
+        fixture.TearDownContext();
+        File.Exists("test.db").Should().BeFalse();
+    }
 
     [Test]
     public void Db_File_is_locked()

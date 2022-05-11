@@ -9,19 +9,13 @@ namespace PersistentDb.TestUtilities;
 // ReSharper disable once InconsistentNaming
 public class TestFixtureWithDbContext_ReflectedConstructor<TDerivedContext> where TDerivedContext : DbContext
 {
-    private static ReflectedConstructor<DbContextOptions<TDerivedContext>, TDerivedContext> _constructor
-        = new(() => DbContextOptions);
+    private static ReflectedDerivedContextConstructor<TDerivedContext> _constructor = new();
 
     protected readonly Func<TDerivedContext> CreateContext;
 
     protected TDerivedContext Context = null!;
 
     public TestFixtureWithDbContext_ReflectedConstructor() => CreateContext = _constructor.Invoke;
-
-    private static DbContextOptions<TDerivedContext> DbContextOptions =>
-        new DbContextOptionsBuilder<TDerivedContext>()
-            .UseSqlite("DataSource=test.db")
-            .Options;
 
     [SetUp]
     public void SetUpContext()
