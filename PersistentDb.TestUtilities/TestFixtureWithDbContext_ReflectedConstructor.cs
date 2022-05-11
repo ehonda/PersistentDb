@@ -9,7 +9,7 @@ namespace PersistentDb.TestUtilities;
 // ReSharper disable once InconsistentNaming
 public class TestFixtureWithDbContext_ReflectedConstructor<TDerivedContext> where TDerivedContext : DbContext
 {
-    private static ReflectedConstructor<TDerivedContext, DbContextOptions<TDerivedContext>> _constructor
+    private static ReflectedConstructor<DbContextOptions<TDerivedContext>, TDerivedContext> _constructor
         = new(() => DbContextOptions);
 
     protected readonly Func<TDerivedContext> CreateContext;
