@@ -1,4 +1,4 @@
-﻿namespace PersistentDb.TestUtilities.Internal;
+﻿namespace PersistentDb.TestUtilities.Internal.NonStatic;
 
 internal class ReflectedConstructor<TArgument0, TTypeToConstruct>
     : ReflectedConstructor<TTypeToConstruct>

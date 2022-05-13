@@ -1,37 +1,28 @@
 ﻿using System.Reflection;
 using JetBrains.Annotations;
 
-namespace PersistentDb.TestUtilities.Internal;
+namespace PersistentDb.TestUtilities.Internal.Static;
 
-internal partial class ReflectedConstructor<TTypeToConstruct>
+internal class ReflectedConstructorWrapper<TTypeToConstruct>
 {
     private readonly ConstructorInfo? _constructor;
 
     private readonly IReadOnlyCollection<Type> _constructorArgumentTypes;
 
-    private readonly IReadOnlyCollection<Func<object?>> _constructorArgumentCreators;
-
-    protected ReflectedConstructor(params (Func<object?> CreateConstructorArgument, Type ConstructorArgumentType)[]
-        constructorArgumentData)
+    public ReflectedConstructorWrapper(params Type[] constructorArgumentTypes)
     {
-        _constructorArgumentTypes = constructorArgumentData
-            .Select(data => data.ConstructorArgumentType)
+        _constructorArgumentTypes = constructorArgumentTypes
             .ToArray();
 
-        _constructorArgumentCreators = constructorArgumentData
-            .Select(data => data.CreateConstructorArgument)
-            .ToArray();
-        
         _constructor = typeof(TTypeToConstruct).GetConstructor(_constructorArgumentTypes.ToArray());
     }
 
-    public TTypeToConstruct Invoke()
+    public TTypeToConstruct Invoke(params object?[] constructorArguments)
     {
         if (_constructor is null)
             throw new InvalidOperationException(NoSuitableConstructorMessage());
 
-        return (TTypeToConstruct) _constructor.Invoke(_constructorArgumentCreators
-            .Select(creator => creator()).ToArray());
+        return (TTypeToConstruct) _constructor.Invoke(constructorArguments.ToArray());
     }
 
     [Pure]

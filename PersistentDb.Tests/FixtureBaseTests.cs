@@ -28,7 +28,7 @@ public class FixtureBaseTests
     [Test]
     public void SetUp_creates_file_ReflectedConstructor()
     {
-        var fixture = new TestFixtureWithDbContext_ReflectedConstructor<MovieDbContext>();
+        var fixture = new TestFixtureWithDbContext_ReflectedConstructor_Static<MovieDbContext>();
         fixture.SetUpContext();
         File.Exists("test.db").Should().BeTrue();
     }
@@ -36,7 +36,7 @@ public class FixtureBaseTests
     [Test]
     public void TearDown_deletes_file_ReflectedConstructor()
     {
-        var fixture = new TestFixtureWithDbContext_ReflectedConstructor<MovieDbContext>();
+        var fixture = new TestFixtureWithDbContext_ReflectedConstructor_Static<MovieDbContext>();
         fixture.SetUpContext();
         fixture.TearDownContext();
         File.Exists("test.db").Should().BeFalse();
